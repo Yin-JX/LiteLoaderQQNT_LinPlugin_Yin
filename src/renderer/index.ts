@@ -74,6 +74,7 @@ const init = async () => {
 
 				// const fandong = new FangDong(message);
 				// fandong.onRecvActiveMsg();
+				fangdongMod.onAddSendMsg(message);
 
 				// const wuxiaEvent = new WuxiaEvent(message);
 				// wuxiaEvent.onRecvActiveMsg();

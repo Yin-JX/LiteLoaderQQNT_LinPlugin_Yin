@@ -54,23 +54,23 @@ export default class FangDongMod {
 		try {
 			const G比价 = new FangDongGroup(this.config.比价群uin);
 			if (this.addSendMsg.peerUin === this.config.比价群uin) {
-				console.log({
-					addSendMsg: this.addSendMsg,
-				});
-
 				if (this.addSendMsg.textContent !== "#比价") {
 					return;
 				}
+				
+				console.log({
+					addSendMsg: this.addSendMsg,
+				});
 
 				const { records } = this.addSendMsg.qqMsg;
 				const recordMsg = new Message(records);
 				console.log("recordMsg", recordMsg);
 				const mkText = recordMsg.markdownElementContent;
-				const regions = mkText.split(" ---").slice(1);
+				const regions = mkText.split("\n*").slice(1);
 
 				if (mkText.includes("账户房豆") && mkText.includes("剩余教义次数")) {
 					const extractData = (region) => {
-						const nameMatch = region.match(/\*\*区域(\d+)：/);
+						const nameMatch = region.match(/\*区域(\d+)：/);
 						const priceMatch = region.match(/地块目前单价(\d+)/);
 						const todayMatch = region.match(/今日高低(\d+)\/(\d+)/);
 						const historyMatch = region.match(/历史高低(\d+)\/(\d+)/);
@@ -114,7 +114,7 @@ export default class FangDongMod {
 				}
 				if (mkText.includes("你可卖的地块")) {
 					const extractData = (region) => {
-						const nameMatch = region.match(/\*\*区域(\d+)：/);
+						const nameMatch = region.match(/\*区域(\d+)：/);
 						const costMatch = region.match(/成本(\d+)/);
 						const marketPriceMatch = region.match(/市场价(\d+)/);
 

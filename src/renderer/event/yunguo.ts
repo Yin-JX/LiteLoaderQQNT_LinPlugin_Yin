@@ -1085,7 +1085,7 @@ class Yunguo extends BaseEvent {
 		// 发起组队
 		if (this.markdownElementContent.includes("发起了组队")) {
 			// 等待发车时间
-			await sleep(this.config.发车时间);
+			await sleep(Number(this.config.发车时间) * 5e3 + 8e3);
 			const cmd = this.markdownElementContent.includes("公会")
 				? "开始公会组队挑战"
 				: "开始组队挑战";
@@ -1248,6 +1248,9 @@ class Yunguo extends BaseEvent {
 				傀儡.wusendCmd(
 					`当前上车次序为 ${跟车次序修改}(带头),若需要更改请发送"去xx"`
 				);
+			} else if (kuileiCmdTemp.match(/公会(\d+)/)) {
+				await linPluginAPI.setConfig("faCheCmd", "确定发起公会组队" + kuileiCmdTemp.match(/公会(\d+)/)?.[1]);
+				傀儡.wusendCmd(`目标副本指令已切换为 确定发起公会组队 ${kuileiCmdTemp.match(/公会(\d+)/)?.[1]},若需要更改请发送"公会xx"`);
 			} else if (kuileiCmdTemp.includes("车头")) {
 				if (kuileiCmdTemp.includes("关闭车头")) {
 					await linPluginAPI.setConfig("autoFaCheFlag", false);
@@ -1258,6 +1261,9 @@ class Yunguo extends BaseEvent {
 					await linPluginAPI.setConfig("自动跟车Flag", false);
 					傀儡.wusendCmd(" 已成为头，立刻续车，请注意关闭其他头");
 				}
+			} else if (kuileiCmdTemp.match(/发车时长(.+)/)) {
+				await linPluginAPI.setConfig("发车时间", (kuileiCmdTemp.match(/发车时长(.+)/)?.[1]));
+				傀儡.wusendCmd(`当前发车时长为 ${kuileiCmdTemp.match(/发车时长(.+)/)?.[1]} * 5 + 8 = ${Number(kuileiCmdTemp.match(/发车时长(.+)/)?.[1]) * 5 + 8}秒,若需要更改请发送"发车时长xx"`);
 			} else if (kuileiCmdTemp.includes("跟车")) {
 				if (kuileiCmdTemp.includes("关闭跟车")) {
 					await linPluginAPI.setConfig("自动跟车Flag", false);
@@ -1274,7 +1280,7 @@ class Yunguo extends BaseEvent {
 						this.config.跟车间隔
 					)}毫秒,是否发车: ${this.config.autoFaCheFlag},副本指令: ${
 						this.config.faCheCmd
-					},发车间隔为 ${Number(this.config.发车时间)}毫秒`
+					},发车间隔为 ${Number(this.config.发车时间)}秒`
 				);
 			} else if (kuileiCmdTemp.includes("多普攻")) {
 				let cs: number = 0;
@@ -1429,9 +1435,15 @@ class Yunguo extends BaseEvent {
 		}
 		const 打怪 = this.groups.get("打怪");
 		if (this.isAtSelf) {
+			const gongdaCd = this.markdownElementContent.includes("攻打失败");
+			const seconds = this.markdownElementContent.match(/还有(\d+)秒cd/)?.[1];
+			if (gongdaCd && seconds) {
+				await sleep(Number(seconds) * 1e3 + 3e3);
+				打怪.ygsendCmd(this.config.打怪指令);
+			}
 			if (this.markdownElementContent.includes("您当前清扫的妖兽为")) {
-				await sleep((this.config.打怪指令间隔 ?? 0) * 1000);
 				if (this.config.打怪指令Flag) {
+					await sleep(3000);
 					打怪.ygsendCmd(this.config.打怪指令);
 				}
 			}
@@ -1452,6 +1464,7 @@ class Yunguo extends BaseEvent {
 			}
 			if (this.markdownElementContent.includes("开始闭关")) {
 				if (this.config.闭关Flag) {
+					await sleep(3000);
 					闭关.ygsendCmd(`闭关${this.config.闭关间隔}`);
 				}
 			}

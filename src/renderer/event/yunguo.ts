@@ -14,16 +14,60 @@ const pluginLog = linPluginAPI.pluginLog;
 
 // 全局变量
 var fenjiejishu = 0;
-var songhuajishu = 0;
+
+var 遇到目标灵宠 = false;
+
+var 斩杀线信号 = [false, false, false];
+var 斩杀线首次触发信号 = false;
+var 本路首次击败 = false;
+var 打死阶段1首次触发信号 = false;
+var 团本阶段一部位列表 = ["云国异兽(朵啦汪)", "云国异兽(鞭苔鸯)", "云国异兽(焗孜骆)", "火焰吞噬者·安徒恩(擎天之柱)", "火焰吞噬者·安徒恩(心脏)", "火焰吞噬者·安徒恩(黑色火山)"];
+var 团本1路列表 = ["云国异兽(朵啦汪)", "火焰吞噬者·安徒恩(擎天之柱)"];
+var 团本2路列表 = ["云国异兽(鞭苔鸯)", "火焰吞噬者·安徒恩(心脏)"];
+var 团本3路列表 = ["云国异兽(焗孜骆)", "火焰吞噬者·安徒恩(黑色火山)"];
+var 团本完整体列表 = ["云国异兽(完整)", "火焰吞噬者·安徒恩(完整)"];
+var 阶段一被打死信号 = [false, false, false];
+var 不小心打死了 = [false, false, false];
+var 团本打完了 = true;
+var 团本开始了 = false;
+var 首次团本发车 = false;
+var 首次上团 = false;
+var 该上团了 = false;
+var 团上人数 = 0;
+var 团cmd = "";
+var 禁锢锁 = false;
+var 修正计数 = 0;
+var 抽风计数 = 0;
+
+var 紧急锁 = false;
+
+var 别刷了 = false;
+
+var 状态记录组 = {
+	斩杀线信号: [false, false, false],
+	斩杀线首次触发信号: false,
+	本路首次击败: false,
+	打死阶段1首次触发信号: false,
+	阶段一被打死信号: [false, false, false],
+	不小心打死了: [false, false, false],
+	团本开始了: false,
+	团本打完了: true,
+	首次团本发车: false,
+	首次上团: false,
+	该上团了: false,
+	团上人数: 0,
+	禁锢锁: false,
+	修正计数: 0,
+	抽风计数: 0,
+}
 
 class Group extends EuphonyGroup {
 	private at: At;
-	private atcs: At;
 
 	constructor(groupId: any, message: Message) {
 		super(groupId);
 		this.at = new At(message.senderUin, message.senderUid);
-		this.atcs = new At("2854200865", "u_FY-uEFafkeFr4we_Y7mdEA");
+
 	}
 
 	sendCmd(msg: string) {
@@ -34,13 +78,113 @@ class Group extends EuphonyGroup {
 	}
 
 	klsendCmd(msg: string) {
+		const at = new At("2854200865", "u_FY-uEFafkeFr4we_Y7mdEA");
 		const messageChain = new MessageChain();
-		messageChain.append(this.atcs);
+		messageChain.append(at);
 		messageChain.append(new PlainText(msg));
 		this.sendMessage(messageChain);
 	}
 
-	ygsendCmd(msg: string) {
+	at爱丽丝(msg: string) {
+		const at = new At('3767080271', 'u_Daam3bVNS58nt3K5IrHvAw');
+		const messageChain = new MessageChain();
+		messageChain.append(at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+	at长生(msg: string) {
+		const at = new At('1957861589', 'u_93HgGix25w2ijbaJ8i9pnA');
+		const messageChain = new MessageChain();
+		messageChain.append(at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+	at爱莉(msg: string) {
+		const at = new At('1281358232', 'u_7ic3yW4zBbczlSUUUfjp9w');
+		const messageChain = new MessageChain();
+		messageChain.append(at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+	at惠惠(msg: string) {
+		const at = new At('3669267770', 'u_zTfx-btymGxQb7D-E9m3xQ');
+		const messageChain = new MessageChain();
+		messageChain.append(at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+	at镜流(msg: string) {
+		const at = new At('1796103557', 'u_DDQGBUSXQDfU9i6HzNqY9A');
+		const messageChain = new MessageChain();
+		messageChain.append(at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+	atyin(msg: string) {
+		const at = new At('1937056729', 'u_C34D6KyHnU_TRl5qIU5RiQ');
+		const messageChain = new MessageChain();
+		messageChain.append(at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+	at盾哥(msg: string) {
+		const at = new At('2946648780', 'u_mEQ92qNsAJz6mRMvE8Cowg');
+		const messageChain = new MessageChain();
+		messageChain.append(at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+	at小李(msg: string) {
+		const at = new At('1970616327', 'u_lDEtnz50VU4G4FOaLB7WTQ');
+		const messageChain = new MessageChain();
+		messageChain.append(at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+	at小Y(msg: string) {
+		const at = new At('605916267', 'u_SRa0adq-6qCE71FXmYJo0w');
+		const messageChain = new MessageChain();
+		messageChain.append(at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+
+	都来发(msg: string) {
+		this.at惠惠(msg);
+		this.at爱丽丝(msg);
+		this.at长生(msg);
+		this.at爱莉(msg);
+		this.at镜流(msg);
+		this.atyin(msg);
+		this.at盾哥(msg);
+		this.at小李(msg);
+		this.at小Y(msg);
+
+	}
+	at两头(msg: string) {
+		this.at惠惠(msg);
+		this.at长生(msg);
+	}
+
+	send信号(msg: string) {
+		this.sendMessage(new PlainText(msg));
+	}
+
+	sendLCCmd(msg: string) {
+		const messageChain = new MessageChain();
+		messageChain.append(this.at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	}
+
+	sendtbCmd(msg: string) {
+		const messageChain = new MessageChain();
+		messageChain.append(this.at);
+		messageChain.append(new PlainText(msg));
+		this.sendMessage(messageChain);
+	  }
+
+	xiuxsendCmd(msg: string) {
 		const messageChain = new MessageChain();
 		messageChain.append(this.at);
 		messageChain.append(new PlainText(msg));
@@ -66,7 +210,7 @@ class Yunguo extends BaseEvent {
 		| "ck"
 		| "hs"
 		| "gl"
-		| "lc"
+		| "灵宠"
 		| "fj"
 		| "sc"
 		| "tz"
@@ -78,7 +222,10 @@ class Yunguo extends BaseEvent {
 		| "fc"
 		| "打怪"
 		| "闭关"
-		| "其他",
+		| "其他"
+		| "接受2"
+		| "灵宠羁绊"
+		| "团本",
 		Group
 	> = new Map();
 
@@ -93,7 +240,7 @@ class Yunguo extends BaseEvent {
 		this.groups.set("ck", new Group(this.config.choukaGroupId, message));
 		this.groups.set("hs", new Group(this.config.choukaGroupId, message));
 		this.groups.set("gl", new Group(this.config.gonglouGroupId, message));
-		this.groups.set("lc", new Group(this.config.LCGroupId, message));
+		this.groups.set("灵宠", new Group(this.config.LCGroupId, message));
 		this.groups.set("fj", new Group(this.config.FJGroupId, message));
 		this.groups.set("sc", new Group(this.config.HUAQIANGroupId, message));
 		this.groups.set("G定时指令", new Group(this.config.定时指令群, message));
@@ -111,6 +258,9 @@ class Yunguo extends BaseEvent {
 		this.groups.set("打怪", new Group(this.config.打怪指令群, message));
 		this.groups.set("闭关", new Group(this.config.闭关群, message));
 		this.groups.set("其他", new Group(this.config.其他指令群, message));
+		this.groups.set("灵宠羁绊", new Group(this.config.灵宠羁绊群, message));
+		this.groups.set("接受2", new Group(Number(this.message.peerUin), message));
+		this.groups.set("团本", new Group(this.config.tbGroupId, message));
 	}
 
 	onRecvActiveMsg() {
@@ -136,6 +286,7 @@ class Yunguo extends BaseEvent {
 			}
 			if (this.config.LCFlag) {
 				this.onLingchong();
+				this.onZLC()
 			}
 			if (this.config.FJFlag) {
 				this.onFenjie();
@@ -194,6 +345,12 @@ class Yunguo extends BaseEvent {
 			if (this.config.闭关Flag) {
 				this.on闭关();
 			}
+			if (this.config.灵宠羁绊Flag) {
+				this.on灵宠羁绊();
+			}
+			if (this.config.tbFlag) {
+				this.TB2();
+			  }
 		}
 
 		if (
@@ -205,6 +362,15 @@ class Yunguo extends BaseEvent {
 			this.config.klqxqq.split(",").includes(this.message.senderUin)
 		) {
 			this.傀儡();
+			this.接受2();
+		}
+
+		if (this.message.peerUid === this.config.tbGroupId) {
+			if (!紧急锁) {
+				this.onAccept();
+				this.团本上车();
+			}
+
 		}
 
 		if (
@@ -252,6 +418,12 @@ class Yunguo extends BaseEvent {
 		return addBtn;
 	}
 
+	/** 上团按钮 */
+	private get 上团按钮() {
+		const addBtn = this.message.findButton("加入团本组队");
+		return addBtn;
+	}
+
 	/** 自己是否在这个车上 */
 	private get isSelfInTheChe() {
 		if (this.genCheBtn) {
@@ -267,9 +439,49 @@ class Yunguo extends BaseEvent {
 		return false;
 	}
 
+	/** 自己是否在这个团上 */
+	private get 我在团上吗() {
+		const 分路 = Number(this.config.tbfl);
+		
+		const 加入团 = this.markdownElementContent.match(/加入团本(\d+)/g);
+	
+		if (this.上团按钮 || 加入团) {
+		  const str = this.markdownElementContent.split(">#")[分路]; //对应自己分路
+		  if (str) {
+			const userGroups = str.match(/用户(:|：)(\d+)/g);
+	
+			if(userGroups && userGroups.length > 0)
+			{
+			  if (userGroups.find((e) => e.includes(this.config.yunGuoUid))) {
+				首次上团 = true;
+				团上人数 = 0;
+				//this.send信号("给我整不会了");
+				return true;
+			  }
+			  else{
+				//this.send信号("你知道个蛋");
+			  }
+			}
+			return false;
+	
+	
+		  }
+		  else
+		  {
+			//this.send信号("我不到啊");
+		  }
+		  return false;
+		}
+		else{
+		  //this.send信号("那我不到啊");
+		}
+		return false;
+	  }
+
 	/**是否艾特了我(傀儡) */
 	private get isAtUid() {
-		return this.textElementAtUid === this.config.klQQ;
+		// return this.textElementAtUid === this.config.klQQ;
+		return this.textElementAtUid === this.globalData.selfUid;
 	}
 
 	/** 当前使用物品的人是不是自己 */
@@ -290,9 +502,9 @@ class Yunguo extends BaseEvent {
 			(e) =>
 				e.elementType === 1 &&
 				e.textElement.atType === 2 &&
-				e.textElement.atUid === this.config.klQQ
+				e.textElement.atUid === this.globalData.selfUid
 		);
-		const find = arr.find((e) => e.textElement.atUid);
+		const find = arr.find((e) => e.textElement.atNtUid);
 		return find?.textElement.atUid;
 	}
 
@@ -312,6 +524,12 @@ class Yunguo extends BaseEvent {
 			.split("")
 			.filter((char) => char !== charToFilter)
 			.join("");
+	}
+
+	private 取随机整数(min: number, max: number) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
 	/**是否包含敏感词*/
@@ -361,7 +579,7 @@ class Yunguo extends BaseEvent {
 	private async 跟车异常处理() {
 		const gc = this.groups.get("gc");
 		// 没钱没花了
-		if (this.markdownElementContent.match(/你的(金币|花)不足/)) {
+		if (this.markdownElementContent.match(/你的(金币|花数)不足/)) {
 			await linPluginAPI.setConfig("自动跟车Flag", false);
 			return;
 		}
@@ -619,7 +837,7 @@ class Yunguo extends BaseEvent {
 
 	/**灵宠 */
 	async onLingchong() {
-		const lc = this.groups.get("lc");
+		const 灵宠 = this.groups.get("灵宠");
 		const backFlag = this.markdownElementContent.includes("回来了");
 		const KongxianFlag = this.markdownElementContent.includes("空闲");
 		const zhuangtai = /还有(\d+)秒可以召回/;
@@ -627,21 +845,21 @@ class Yunguo extends BaseEvent {
 
 		if (this.isAtSelf) {
 			if (KongxianFlag) {
-				lc.sendCmd("派遣挖云石60");
+				灵宠.sendCmd("派遣挖云石60");
 				await sleep(60 * 60 * 1e3);
-				lc.sendCmd("召回灵宠");
+				灵宠.sendCmd("召回灵宠");
 			}
 
 			if (backFlag) {
-				lc.sendCmd("派遣挖云石60");
+				灵宠.sendCmd("派遣挖云石60");
 				await sleep(60 * 60 * 1e3);
-				lc.sendCmd("召回灵宠");
+				灵宠.sendCmd("召回灵宠");
 			}
 
 			if (ZHsecond) {
 				if (parseInt(ZHsecond, 10) > 0) {
 					await sleep(Number(ZHsecond) * 1e3);
-					lc.sendCmd("召回灵宠");
+					灵宠.sendCmd("召回灵宠");
 				}
 			}
 		}
@@ -728,7 +946,7 @@ class Yunguo extends BaseEvent {
 		}
 	}
 
-	/**送花 */
+	// /**送花 */
 	// async onSonghua() {
 	// 	if (this.isAtSelf && this.message.peerUid === this.config.songhuaGroupId) {
 	// 		const songhua = this.groups.get("songhua");
@@ -791,19 +1009,26 @@ class Yunguo extends BaseEvent {
 				this.markdownElementContent.includes("团本") &&
 				this.markdownElementContent.includes("血量");
 
-			// const tuan_s = this.getNumberValue(
-			// 	this.markdownElementContent.match(
-			// 		/别着急嘛，tuan又不会跑，还有(\d+)秒冷却/
-			// 	)[1]
-			// );
-			// if (tuan_s > 0) {
-			// 	await sleep(tuan_s * 1000);
-			// 	boss.sendCmd(tuan ? "团本普攻" : "普攻");
-			// 	return;
-			// }
+			const jinengdian_no = this.markdownElementContent.includes("技能点不足");
+			const tuan_s = this.getNumberValue(
+				this.markdownElementContent.match(
+					/又不会跑，还有(\d+)秒冷却/
+				)?.[1]
+			);
+			if (tuan_s && tuan_s > 0 && tuan_s < 100) {
+				if (tuan_s > 0 && tuan_s < 10) {
+					await sleep(tuan_s * 1000);
+					boss.sendCmd("普攻");
+					return;
+				} else if (tuan_s > 10 && tuan_s < 100) {
+					await sleep(tuan_s * 1000);
+					boss.sendCmd("团本普攻");
+					return;
+				}
+			}
 
 			// 消息包含boss血量或者使用圣水
-			if (bossHp || isSs || tuan) {
+			if (bossHp || isSs || tuan || jinengdian_no) {
 				const hyFlag =
 					this.config.pugongAutoYaoFlag &&
 					this.markdownElementContent.includes("无法继续战斗") &&
@@ -979,8 +1204,8 @@ class Yunguo extends BaseEvent {
 	// 		// 只有开启了自动跟车或者自动发车才执行
 	// 		if (this.config.autoFaCheFlag || this.config.autoGenCheFlag) {
 	// 			if (this.markdownElementContent.match(/你的(金币|花)不足/)) {
-	// 				await linPluginAPI.setConfig(CONFIG_KEY.autoFaCheFlag, false);
-	// 				await linPluginAPI.setConfig(CONFIG_KEY.autoGenCheFlag, false);
+	// 				await linPluginAPI.setConfig(this.config.autoFaCheFlag, false);
+	// 				await linPluginAPI.setConfig(this.config.autoGenCheFlag, false);
 	// 				return;
 	// 			}
 
@@ -1183,7 +1408,7 @@ class Yunguo extends BaseEvent {
 				return;
 			}
 
-			if (this.markdownElementContent.match(/你的(金币|花)不足/)) {
+			if (this.markdownElementContent.match(/你的(金币|花数)不足/)) {
 				await linPluginAPI.setConfig("autoFaCheFlag", false);
 				return;
 			}
@@ -1223,24 +1448,31 @@ class Yunguo extends BaseEvent {
 
 	async 傀儡() {
 		const 加 = this.textElementContent.includes("+");
+		const 智障回复 = linPluginAPI.getConfig(this.config.智障回复);
+		const 傀儡 = this.groups.get("傀儡");
+		const 傀儡信息 = this.filterChars(this.textElementContent, "+");
+
+		const kuileiCmdTemp = `${傀儡信息}`;
 		if (
 			(加 && !this.config.klmgc) ||
 			(加 &&
 				this.config.klmgc &&
 				!this.containsAny(this.textElementContent, this.config.klmgc))
 		) {
-			const 傀儡 = this.groups.get("傀儡");
-			const 傀儡信息 = this.filterChars(this.textElementContent, "+");
 			console.log("傀儡", {
 				qqMsg: this.message.qqMsg,
 				Content: 傀儡信息,
 			});
-
-			const kuileiCmdTemp = `${傀儡信息}`;
 			const 跟车次序 = this.getNumberValue(this.config.跟车次序);
 
 			// await sleep(1500);
-			if (kuileiCmdTemp.match(/去(\d+)/)) {
+			if (kuileiCmdTemp.match(/团本斩杀线(\d+)/)) {
+				linPluginAPI.setConfig("tbzsx", kuileiCmdTemp.match(/团本斩杀线(\d+)/)?.[1]);
+				傀儡.send信号(`分路为${this.config.tbfl},斩杀线已设置为 ${kuileiCmdTemp.match(/团本斩杀线(\d+)/)?.[1]},若需要更改请发送"团本斩杀线xx","路xx"`);
+			} else if (kuileiCmdTemp.match(/路(\d+)/)) {
+				linPluginAPI.setConfig("tbfl", kuileiCmdTemp.match(/路(\d+)/)?.[1]);
+				傀儡.send信号(`分路为${kuileiCmdTemp.match(/路(\d+)/)?.[1]},斩杀线已设置为 ${this.config.tbzsx},若需要更改请发送"团本斩杀线xx","路xx"`);
+			} else if (kuileiCmdTemp.match(/去(\d+)/)) {
 				const 跟车次序修改 = this.getNumberValue(
 					kuileiCmdTemp.match(/去(\d+)/)?.[1]
 				);
@@ -1264,6 +1496,9 @@ class Yunguo extends BaseEvent {
 			} else if (kuileiCmdTemp.match(/发车时长(.+)/)) {
 				await linPluginAPI.setConfig("发车时间", (kuileiCmdTemp.match(/发车时长(.+)/)?.[1]));
 				傀儡.wusendCmd(`当前发车时长为 ${kuileiCmdTemp.match(/发车时长(.+)/)?.[1]} * 5 + 8 = ${Number(kuileiCmdTemp.match(/发车时长(.+)/)?.[1]) * 5 + 8}秒,若需要更改请发送"发车时长xx"`);
+			} else if (kuileiCmdTemp.match(/团本指令(.+)/)) {
+				linPluginAPI.setConfig("团本指令", kuileiCmdTemp.match(/\*团本指令(.+)/)?.[1]);
+				傀儡.send信号(`当前团本指令为 ${kuileiCmdTemp.match(/\*团本指令(.+)/)?.[1]},若需要更改请发送"*团本指令xx"`);
 			} else if (kuileiCmdTemp.includes("跟车")) {
 				if (kuileiCmdTemp.includes("关闭跟车")) {
 					await linPluginAPI.setConfig("自动跟车Flag", false);
@@ -1274,27 +1509,74 @@ class Yunguo extends BaseEvent {
 				}
 			} else if (kuileiCmdTemp.includes("配置")) {
 				傀儡.wusendCmd(
-					` 配置信息=>是否跟车: ${
-						this.config.自动跟车Flag
-					},上车次序为 ${跟车次序}(带车头),跟车间隔为 ${Number(
-						this.config.跟车间隔
-					)}毫秒,是否发车: ${this.config.autoFaCheFlag},副本指令: ${
-						this.config.faCheCmd
-					},发车间隔为 ${Number(this.config.发车时间)}秒`
+					`配置信息=>普通本和公会本这边，我目前${this.config.autoFaCheFlag ? "是" : "不是"} 车头,\n
+					${this.config.diaoShuiAutoFaCheFlag ? "使用" : "不使用"} 打完副本掉水续车,\n
+					${this.config.自动跟车Flag ? "并且我" : ""}${this.config.自动跟车Flag ? "会" : "不会"} 自动在 ${this.config.跟车次序 ? this.config.跟车次序 + "(带车头)" : "(啊这，我没有上车次序哦)"} 号位跟车,\n
+					跟车间隔为 ${Number(this.config.跟车间隔)}毫秒,\n
+					副本指令: ${this.config.faCheCmd},\n
+					发车间隔为 ${Number(this.config.发车时间 * 5 + 8)}秒。\n
+					团本方面，我目前分路为 ${this.config.tbfl},斩杀线为 ${this.config.tbzsx / 10000} 万滴血\n
+					而且我 ${this.config.发团人flag ? "作为" : "并不作为"} 开团手\n
+					我的团本指令是 ${this.config.团本指令 ? this.config.团本指令 : "(啊这，我没有团本指令哦)"}\n
+					第 ${this.config.总次序 ? this.config.总次序 : "(啊这我没有上团序号)"} 个上团;
+					`
 				);
-			} else if (kuileiCmdTemp.includes("多普攻")) {
-				let cs: number = 0;
-				for (let i = 0; i < 10; i++) {
-					cs = cs + 1;
-					sleep(1000 * (cs * 2));
-					傀儡.klsendCmd("普攻");
-				}
-			} else if (kuileiCmdTemp.includes("多团本普攻")) {
-				for (let i = 0; i < 10; i++) {
-					傀儡.klsendCmd("团本普攻");
-				}
 			} else {
 				傀儡.klsendCmd(kuileiCmdTemp);
+			}
+		} else {
+			if (kuileiCmdTemp.match(/\*你来开团/)) {
+				linPluginAPI.setConfig("发团人flag", true);
+				傀儡.send信号(`好的，现在由我来开团，请注意关闭其他开团手，若需要关闭请at对应目标发送"*关团"，并且，当前由于我作为开团手，我的上团次序已清空，请注意让其他人补位。上团次序为 ${this.config.总次序} ，若需要更改其他人次序请发送"*次序xx"`);
+				linPluginAPI.setConfig("总次序", null);
+			}
+			else if (kuileiCmdTemp.match(/\*关团/)) {
+				linPluginAPI.setConfig("发团人flag", false);
+				傀儡.send信号(`已关闭开团手，若需要开启请at对应目标发送"*你来开团"，当前并无上团次序，若需要安排请发送"*次序xx"`);
+				linPluginAPI.setConfig("总次序", null);
+			}
+			else if (kuileiCmdTemp.match(/\*次序(\d+)/)) {
+				linPluginAPI.setConfig("总次序", kuileiCmdTemp.match(/\*次序(\d+)/)?.[1]);
+				傀儡.send信号(`当前上团次序为 ${kuileiCmdTemp.match(/次序(\d+)/)?.[1]},若需要更改请at对应目标发送"次序xx",请注意不要和别人冲突，同时为了避免产生冲突，默认安排次序时会关掉开团手职位，若需要开启请at对应目标发送"*你来开团"`);
+				linPluginAPI.setConfig("发团人flag", false);
+			} else if (kuileiCmdTemp.match(/-(闭嘴|锁|静音)/)) {
+				紧急锁 = true;
+				傀儡.send信号("啊这，我是不是抽风了");
+			}
+			else if (kuileiCmdTemp.match(/-(说话|开锁|解锁)/)) {
+				紧急锁 = false
+				傀儡.send信号("ok我恢复正常");
+			}
+			else if (kuileiCmdTemp.match(/\*蹭/)) {
+				linPluginAPI.setConfig("蹭团", true);
+				傀儡.send信号("既然如此那我就——开蹭！！");
+			}
+			else if (kuileiCmdTemp.match(/\*(不蹭|出力)/)) {
+				linPluginAPI.setConfig("蹭团", false);
+				傀儡.send信号("我也来打");
+			}
+			else if (kuileiCmdTemp.match(/\-(别刷了|sb)/)) {
+				别刷了 = true;
+				傀儡.send信号("不刷了不刷了");
+			}
+			else if (kuileiCmdTemp.match(/\-(刷)/)) {
+				别刷了 = false;
+				傀儡.send信号("爆！");
+			}
+			else if (kuileiCmdTemp.match(/\-(人机|开启智障回复)/)) {
+				linPluginAPI.setConfig("智障回复", true);
+				await sleep(this.取随机整数(3, 6) * 1e3);
+				傀儡.send信号(kuileiCmdTemp.match(/\-人机/) ? "你tm才人机" : "智nm障");
+			}
+			else if (kuileiCmdTemp.match(/\-(别吵|关闭人机|关闭智障回复)/)) {
+				linPluginAPI.setConfig("智障回复", false);
+				await sleep(this.取随机整数(3, 6) * 1e3);
+				傀儡.send信号("别@我，我睡了");
+			} else if (智障回复)//自动回复，好玩
+			{
+				await sleep(this.取随机整数(2, 6) * 1e3);
+				var 回复 = ["?", `${kuileiCmdTemp.includes("普攻") ? "我打boss？！真的假的……" : kuileiCmdTemp.match(/放弃(.+)/)?.[1] ? "永不言弃!!" : "我不要"}`, `${kuileiCmdTemp.includes("确定") ? "对，我确定" : "嗯？好像不太确定"}`, "??", "是这样的", "啊？", `${kuileiCmdTemp.substring(0, this.取随机整数(kuileiCmdTemp.length * 0.2, kuileiCmdTemp.length * 0.8)).split("").reverse().join('')}……？还是什么东西？`, "怎么了？", `什么${kuileiCmdTemp.substring(0, kuileiCmdTemp.length * 0.2)}…什么${kuileiCmdTemp.substring(kuileiCmdTemp.length * 0.2 + 1, kuileiCmdTemp.length * 0.7)}……然后什么${kuileiCmdTemp.substring(kuileiCmdTemp.length * 0.7, kuileiCmdTemp.length)}？？`, "额", "..", "....", "啥？", "听不懂", "听不懂。。。", "嗯？？", "嗯?", "怎么了", "好哦", "阿巴阿巴", "嚎痴", `${kuileiCmdTemp}？`, `什么${kuileiCmdTemp}？`, `${kuileiCmdTemp}干嘛？`, `${kuileiCmdTemp.split('').reverse().join('')}`, `啊？${kuileiCmdTemp.substring(this.取随机整数(0, kuileiCmdTemp.length * 0.3), this.取随机整数(kuileiCmdTemp.length * 0.3, kuileiCmdTemp.length * 0.6))}……？？`];
+				傀儡.send信号(回复[this.取随机整数(0, 回复.length - 1)]);
 			}
 		}
 	}
@@ -1409,7 +1691,7 @@ class Yunguo extends BaseEvent {
 					// console.log({ id, name, lv, type, bonus, match });
 					if (
 						Number(bonus) >=
-							this.getNumberValue(this.config.自动分解_主词条数值) &&
+						this.getNumberValue(this.config.自动分解_主词条数值) &&
 						Number(lv) < this.getNumberValue(2)
 					) {
 						圣物_id = id;
@@ -1439,12 +1721,12 @@ class Yunguo extends BaseEvent {
 			const seconds = this.markdownElementContent.match(/还有(\d+)秒cd/)?.[1];
 			if (gongdaCd && seconds) {
 				await sleep(Number(seconds) * 1e3 + 3e3);
-				打怪.ygsendCmd(this.config.打怪指令);
+				打怪.xiuxsendCmd(this.config.打怪指令);
 			}
 			if (this.markdownElementContent.includes("您当前清扫的妖兽为")) {
 				if (this.config.打怪指令Flag) {
 					await sleep(3000);
-					打怪.ygsendCmd(this.config.打怪指令);
+					打怪.xiuxsendCmd(this.config.打怪指令);
 				}
 			}
 		}
@@ -1460,12 +1742,12 @@ class Yunguo extends BaseEvent {
 			const seconds = this.markdownElementContent.match(/还有(\d+)秒cd/)?.[1];
 			if (biguanCd && seconds) {
 				await sleep(Number(seconds) * 1e3 + 3e3);
-				闭关.ygsendCmd(`闭关${this.config.闭关间隔}`);
+				闭关.xiuxsendCmd(`闭关${this.config.闭关间隔}`);
 			}
 			if (this.markdownElementContent.includes("开始闭关")) {
 				if (this.config.闭关Flag) {
 					await sleep(3000);
-					闭关.ygsendCmd(`闭关${this.config.闭关间隔}`);
+					闭关.xiuxsendCmd(`闭关${this.config.闭关间隔}`);
 				}
 			}
 		}
@@ -1541,6 +1823,605 @@ class Yunguo extends BaseEvent {
 			}
 		}
 	}
+
+	/**灵宠羁绊 */
+	async on灵宠羁绊() {
+		if (this.message.peerUin !== this.config.灵宠羁绊群) {
+			return;
+		}
+		const 灵宠羁绊 = this.groups.get("灵宠羁绊");
+		const 灵宠出战 = this.markdownElementContent.includes("派出了");
+		const 建立羁绊 = this.markdownElementContent.includes("个人属性加成变化");
+		if (this.isAtSelf) {
+			if (灵宠出战) {
+				await sleep(1e3);
+				灵宠羁绊.sendCmd(`建立羁绊${this.config.灵宠羁绊Id}`);
+				await sleep(2e3);
+				灵宠羁绊.sendCmd(`灵宠出战${this.config.灵宠羁绊Id}`);
+			}
+		}
+	}
+
+	//抓灵宠
+	async onZLC() {
+
+		const LCFlag = this.config.LCFlag;
+		const 灵宠 = this.groups.get("灵宠");
+		const 遇到灵宠 = this.markdownElementContent.match(/你遇到了(.+)/)?.[1];
+		const 当前抓捕 = this.markdownElementContent.match(/当前抓捕(:|：)(.+)/)?.[2];
+		var 目标灵宠列表 = ["云·苍龙", "云·霜雪精灵", "云·露奈雅"];
+
+		const 正在抓捕 = this.markdownElementContent.match(/正在抓捕(.+)中/)?.[1];
+		const 抓捕对象 = 目标灵宠列表.includes(正在抓捕) ? true : false;
+		const 抓捕率 = Number(this.markdownElementContent.match(/抓捕成功率(:|：)(\d+)%/)?.[2]);
+		const 灵宠行动冷却 = Number(this.markdownElementContent.match(/请等待(\d+)秒再次操作/)?.[1]);
+		const 已抓捕 = this.markdownElementContent.includes("恭喜你");
+		const 抓捕失败 = this.markdownElementContent.includes("跑掉了");
+
+		const 是自己 = this.markdownElementContent.match(/用户(:|：)(\d.+)/)?.[2] === this.config.yunGuoUid ? true : false;
+
+		if (LCFlag && this.isAtSelf) {
+
+			if (this.markdownElementContent.includes("没有遇到")) {
+				await sleep(2e3);
+				灵宠.sendLCCmd("抓灵宠");
+			}
+
+			if (灵宠行动冷却) {
+				await sleep(灵宠行动冷却 * 1e3);
+				灵宠.sendLCCmd("抓灵宠");
+			}
+			if (已抓捕 || 抓捕失败) {
+				await sleep(2e3);
+				灵宠.sendLCCmd("抓灵宠");
+			}
+			if (正在抓捕) {
+				if (抓捕对象) {
+					await sleep(61e3);
+					灵宠.sendLCCmd("灵宠挑战");
+				} else {
+					await sleep(2e3);
+					灵宠.sendLCCmd("放弃抓捕");
+				}
+
+			}
+			if (遇到灵宠) {
+				if (目标灵宠列表.includes(遇到灵宠)) {
+					遇到目标灵宠 = true;
+				} else {
+					遇到目标灵宠 = false;
+					await sleep(2e3);
+					灵宠.sendLCCmd("放弃抓捕");
+				}
+
+			}
+			if (当前抓捕) {
+				if (目标灵宠列表.includes(当前抓捕)) {
+					遇到目标灵宠 = true;
+				} else {
+					遇到目标灵宠 = false;
+					await sleep(2e3);
+					灵宠.sendLCCmd("放弃抓捕");
+				}
+
+			}
+
+			if (遇到目标灵宠)//遇到要抓的
+			{
+				if (抓捕率 >= 80) {
+					await sleep(2e3);
+					灵宠.sendLCCmd("丢球 高级精灵球");
+				} else {
+					await sleep(61e3);
+					灵宠.sendLCCmd("灵宠挑战");
+				}
+			} else {
+
+			}
+		}
+	}
+
+	//测试接收他人消息
+	async onAccept() {
+		const 傀儡 = this.groups.get("傀儡");
+		const 分路 = Number(this.config.tbfl);
+		const 消息 = `${this.textElementContent}`;
+		const 发团人flag = this.config.发团人flag;
+		const 团本指令 = this.config.团本指令;
+		const 目前人数 = Number(消息.match(/=哟嚯==(\d+)已上团本==哟嚯=/)?.[1]);
+
+
+		if (消息.match(/=啊哈==(\d+)路已到斩杀线==啊哈=/)) {
+
+			const 路数 = Number(消息.match(/=啊哈==(\d+)路已到斩杀线==啊哈=/)?.[1]);
+			团cmd = 消息.match(/=哟嚯==(\d+)已上团本(.+)==哟嚯=/)?.[2] + " " + 分路 + "确定";
+			斩杀线信号[路数 - 1] = true;
+
+			if (斩杀线信号.every(element => element === true)) {
+				//this.send信号("斩杀线信号全为true");
+				if (!斩杀线首次触发信号) {
+					傀儡.klsendCmd("团本普攻");
+					抽风计数 += 1;
+					斩杀线首次触发信号 = true;
+				}
+			}
+			//this.send信号(`斩杀线信号[${路数} - 1]:${斩杀线信号[路数 - 1]}`);
+			//this.send信号(`${路数}`);
+		}
+		else if (消息.match(/(团！|打团|团？)/) && 发团人flag) {
+			傀儡.klsendCmd(团本指令);
+		}
+		else if (目前人数) {
+			团上人数 = 目前人数;
+		}
+
+	}
+
+	async 接受2() {
+		const 接受2 = this.groups.get("接受2");
+		const 全局监控指令 = linPluginAPI.getConfig(this.config.全局监控指令);
+		const 消息 = `${this.textElementContent}`;
+
+		if (全局监控指令) {
+			if (消息.match(/at长生(.+)/) && !this.isAtUid) {
+				接受2.at长生(消息.match(/at长生(.+)/)?.[1]);
+			}
+			else if (消息.match(/at爱莉(.+)/) && !this.isAtUid) {
+				接受2.at爱莉(消息.match(/at爱莉(.+)/)?.[1]);
+			}
+			else if (消息.match(/at爱丽丝(.+)/) && !this.isAtUid) {
+				接受2.at爱丽丝(消息.match(/at爱丽丝(.+)/)?.[1]);
+			}
+			else if (消息.match(/at惠惠(.+)/) && !this.isAtUid) {
+				接受2.at惠惠(消息.match(/at惠惠(.+)/)?.[1]);
+			}
+			else if (消息.match(/at镜流(.+)/) && !this.isAtUid) {
+				接受2.at镜流(消息.match(/at镜流(.+)/)?.[1]);
+			}
+			else if (消息.match(/atyin(.+)/) && !this.isAtUid) {
+				接受2.atyin(消息.match(/atyin(.+)/)?.[1]);
+			}
+			else if (消息.match(/at盾哥(.+)/) && !this.isAtUid) {
+				接受2.at盾哥(消息.match(/at盾哥(.+)/)?.[1]);
+			}
+			else if (消息.match(/at小李(.+)/) && !this.isAtUid) {
+				接受2.at小李(消息.match(/at小李(.+)/)?.[1]);
+			}
+			else if (消息.match(/at小Y(.+)/) && !this.isAtUid) {
+				接受2.at小Y(消息.match(/at小Y(.+)/)?.[1]);
+			}
+			else if (消息.match(/at都来发(.+)/) && !this.isAtUid) {
+				接受2.都来发(消息.match(/at都来发(.+)/)?.[1]);
+			}
+			else if (消息.match(/at两头(.+)/) && !this.isAtUid) {
+				接受2.at两头(消息.match(/at两头(.+)/)?.[1]);
+			}
+			else if (消息.match(/-一键签到/) && !this.isAtUid) {
+				接受2.klsendCmd("公会签到");
+			}
+			else if (消息.match(/-(止|停)/) && !this.isAtUid) {
+				紧急锁 = true;
+				接受2.send信号("紧急锁定已打开");
+			}
+			else if (消息.match(/-(解|始)/) && !this.isAtUid) {
+				紧急锁 = false;
+				接受2.send信号("紧急锁定已关闭");
+			}
+			else if (消息.match(/-(置零|零)/) && !this.isAtUid) {
+
+				状态记录组.斩杀线首次触发信号 = 斩杀线首次触发信号;
+				状态记录组.打死阶段1首次触发信号 = 打死阶段1首次触发信号;
+				状态记录组.本路首次击败 = 本路首次击败;
+				状态记录组.斩杀线信号 = 斩杀线信号;
+				状态记录组.阶段一被打死信号 = 阶段一被打死信号;
+				状态记录组.不小心打死了 = 不小心打死了;
+				状态记录组.团本开始了 = 团本开始了;
+				状态记录组.团本打完了 = 团本打完了;
+				状态记录组.禁锢锁 = 禁锢锁;
+				状态记录组.修正计数 = 修正计数;
+
+
+
+				斩杀线首次触发信号 = false;
+				打死阶段1首次触发信号 = false;
+				本路首次击败 = false;
+				斩杀线信号 = [false, false, false];
+				阶段一被打死信号 = [false, false, false];
+				不小心打死了 = [false, false, false];
+				团本开始了 = true;
+				团本打完了 = false;
+				禁锢锁 = false;
+				修正计数 = 0;
+				团上人数 = 0;
+				首次团本发车 = false;
+
+
+
+				接受2.send信号("状态已重置");
+			}
+			else if (消息.match(/-(复原|复|归)/) && !this.isAtUid) {
+				斩杀线首次触发信号 = 状态记录组.斩杀线首次触发信号;
+				打死阶段1首次触发信号 = 状态记录组.打死阶段1首次触发信号;
+				本路首次击败 = 状态记录组.本路首次击败;
+				斩杀线信号 = 状态记录组.斩杀线信号;
+				阶段一被打死信号 = 状态记录组.阶段一被打死信号;
+				不小心打死了 = 状态记录组.不小心打死了;
+				团本开始了 = 状态记录组.团本开始了;
+				团本打完了 = 状态记录组.团本打完了;
+				禁锢锁 = 状态记录组.禁锢锁;
+				修正计数 = 状态记录组.修正计数;
+
+				接受2.send信号("状态回溯");
+			}
+
+		}
+
+
+	}
+
+	//团本上车安排
+	async 团本上车() {
+
+		const 团本 = this.groups.get("团本");
+		const tbFlag = this.config.tbFlag;
+		const 分路 = Number(this.config.tbfl);
+		const 总次序 = Number(this.config.总次序);
+		const 发团人flag = this.config.发团人flag;
+
+
+		const 消息 = `${this.textElementContent}`;
+
+
+
+
+		首次上团 = false;
+
+		if (this.上团按钮 && !发团人flag && this.我在团上吗 === false && tbFlag && !首次上团) {
+
+			//状态组重置
+			斩杀线首次触发信号 = false;
+			打死阶段1首次触发信号 = false;
+			本路首次击败 = false;
+			斩杀线信号 = [false, false, false];
+			阶段一被打死信号 = [false, false, false];
+			不小心打死了 = [false, false, false];
+			团本开始了 = false;
+			团本打完了 = false;
+			禁锢锁 = false;
+			修正计数 = 0;
+
+
+			//this.send信号("我过关！");
+			const 上团指令 = `${this.上团按钮.data} ${分路}确定`;
+			if (总次序 == 1) //第一名(除去开团人)上团
+			{
+
+				团本.send信号(`=哟嚯==${总次序}已上团本==哟嚯=`);
+				await sleep(4e3);
+				团本.klsendCmd(上团指令);
+
+
+			}
+
+			else if (团上人数 == 总次序 - 1) //第一名(除去开团人)上团之后
+			{
+				团本.send信号(`=哟嚯==${总次序}已上团本==哟嚯=`);
+				await sleep(4e3);
+				团本.klsendCmd(上团指令);
+
+			}
+
+		}
+		/*
+		else if(团上人数 == 总次序 - 1 && !首次上团) //第一名(除去开团人)上团之后
+		{
+		  this.klsendCmd(团cmd);
+		  首次上团 = true;
+		  await sleep(4e3);
+		  this.send信号(`=哟嚯==${总次序}已上团本${团cmd}==哟嚯=`);
+	  
+		  
+	  
+		}
+		  */
+		else if (!首次团本发车 && 发团人flag && this.上团按钮) {
+			首次团本发车 = true;
+			await sleep(120 * 1e3); //检测到发起团本后120秒开始挑战
+			团本.sendtbCmd("开始团本挑战");
+			首次团本发车 = false;
+		}
+	}
+
+	//团本
+	async TB2() {
+		const 团本 = this.groups.get("团本");
+		const tbFlag = this.config.tbFlag;
+		const 取文本 = this.config.取文本内容;
+		const 蹭 = this.config.蹭团;
+
+		const 分路 = Number(this.config.tbfl);
+		const 斩杀线 = Number(this.config.tbzsx);
+
+		const 死亡 = this.markdownElementContent.match(/被(.+)击败了/);
+		const 击败 = this.markdownElementContent.match(/你们击败了(.+)/);
+		const 死亡元素 = 死亡 ? 死亡[1] : null;
+		const 击败元素 = 击败 ? 击败[1] : null;
+
+
+		const 团本标志 = this.markdownElementContent.match(/团本(:|：)/);
+		const 团本开始标志 = this.markdownElementContent.match(/开始了团本挑战副本/);
+		const 阶段1标志 = (this.markdownElementContent.match(/部位/) || 团本阶段一部位列表.includes(死亡元素)) ? true : false;
+		const 阶段2标志 = this.markdownElementContent.match(/完整/);
+		const 本路击败 = (团本阶段一部位列表.includes(击败元素) && this.isAtSelf) ? true : false;
+		const 完整体击败 = 团本完整体列表.includes(击败元素);
+
+		const 发车的冷却 = Number(this.markdownElementContent.match(/你还有(\d+)秒冷却才能发起组队/)?.[1]);
+		const 团本指令 = this.config.团本指令;
+		const 发团人flag = this.config.发团人flag;
+
+		//防止抽风
+		if ((阶段1标志 || 阶段2标志) && this.isAtSelf) {
+			抽风计数 = 0;
+		}
+		else if (!(阶段1标志 || 阶段2标志) && this.isAtSelf) {
+
+		}
+
+		//意外打死情况↓
+		if (团本1路列表.includes(击败元素) && 斩杀线信号[0] === false) {
+			斩杀线信号[0] = true;
+			if (斩杀线信号.every(element => element === true)) {
+				团本.klsendCmd("团本普攻");
+				抽风计数 += 1;
+			}
+		}
+
+		if (团本2路列表.includes(击败元素) && 斩杀线信号[1] === false) {
+			斩杀线信号[1] = true;
+			if (斩杀线信号.every(element => element === true)) {
+				团本.klsendCmd("团本普攻");
+				抽风计数 += 1;
+			}
+		}
+
+		if (团本3路列表.includes(击败元素) && 斩杀线信号[2] === false) {
+			斩杀线信号[2] = true;
+			if (斩杀线信号.every(element => element === true)) {
+				团本.klsendCmd("团本普攻");
+				抽风计数 += 1;
+			}
+		}
+
+		//分路击败情况↓
+
+		if (团本1路列表.includes(击败元素)) {
+			阶段一被打死信号[0] = true;
+			//团本.send信号("1路");
+		}
+
+		if (团本2路列表.includes(击败元素)) {
+			阶段一被打死信号[1] = true;
+			//团本.send信号("2路");
+		}
+
+		if (团本3路列表.includes(击败元素)) {
+			阶段一被打死信号[2] = true;
+			//团本.send信号("3路");
+		}
+
+
+		const 团本团队标志 = this.markdownElementContent.split('团队信息');
+
+		const 技能点 = Number(this.markdownElementContent.match(/技能点(:|：)(\d+)/)?.[2]);
+		const 不足 = this.markdownElementContent.includes("技能点不足");
+		const 禁锢秒 = Number((this.markdownElementContent.match(/禁锢了你 (\d+) 秒/)) ? this.markdownElementContent.match(/禁锢了你 (\d+) 秒/)?.[1] : this.markdownElementContent.match(/Boss又不会跑，还有(\d+)秒冷却/)?.[1]) + 2;
+
+		const 进入二阶段标志 = this.markdownElementContent.match(/进入最终boss/);
+
+
+		if (tbFlag && !蹭) {
+			//修正
+			if (!this.isAtSelf && !禁锢锁 && !(斩杀线信号[分路 - 1] == true && 阶段1标志) && 团本开始了) {
+				修正计数 += 1;
+				if (修正计数 >= 5) {
+					团本.send信号("你妈的草王我就知道你卡了，不理我是吧");
+					团本.klsendCmd("团本普攻");
+					抽风计数 += 1;
+					修正计数 = 0;
+
+				}
+			}
+			if (this.isAtSelf && (阶段1标志 || 阶段2标志)) {
+				修正计数 = 0;
+			}
+
+			//开打时
+			if (团本开始标志) {
+				await sleep(3e3);
+				团本.sendtbCmd("团本普攻");
+				斩杀线首次触发信号 = false;
+				打死阶段1首次触发信号 = false;
+				本路首次击败 = false;
+				斩杀线信号 = [false, false, false];
+				阶段一被打死信号 = [false, false, false];
+				不小心打死了 = [false, false, false];
+				团本开始了 = true;
+				团本打完了 = false;
+				禁锢锁 = false;
+				修正计数 = 0;
+				首次团本发车 = false;
+			}
+			//阶段一
+			if (阶段1标志 && this.isAtSelf) {
+				const 阶段一血量 = Number((团本团队标志[0].match(/血量(:|：)(\d+)/)?.[2]) ? 团本团队标志[0].match(/血量(:|：)(\d+)/)?.[2] : this.markdownElementContent.match(/血量(:|：)(\d+)/)?.[2]);
+				if (!(斩杀线信号.every(element => element === true)))
+				//阶段一并没有全路到斩杀线
+				{
+					if (禁锢秒 && this.isAtSelf && !禁锢锁 && 阶段1标志) {
+						禁锢锁 = true;
+						await sleep(禁锢秒 * 1e3);
+						if (抽风计数 <= 1) {
+							团本.sendtbCmd("团本普攻");
+							抽风计数 += 1;
+
+						}
+						禁锢锁 = false;
+					}
+					else if (阶段一血量 > 斩杀线 && !禁锢秒 && 阶段1标志) {
+
+						斩杀线信号[分路 - 1] = false;
+						//自己阶段一未到斩杀线
+						if (技能点 && 技能点 >= 8) {
+							await sleep(4e3);
+							团本.sendtbCmd("团本技能6");
+						}
+						else if (不足)//出现技能点不足的提示
+						{
+							await sleep(4e3);
+							if (抽风计数 <= 1) {
+								团本.sendtbCmd("团本普攻");
+								抽风计数 += 1;
+							}
+						}
+						else//技能点不足 or 正常普攻情况
+						{
+							await sleep(4e3);
+							if (抽风计数 <= 1) {
+								团本.sendtbCmd("团本普攻");
+								抽风计数 += 1;
+
+							}
+						}
+
+						//this.send信号("这是阶段一！！！");
+					}
+
+					else {
+						//自己阶段一到斩杀线
+						await sleep(6e3);
+						团本.send信号(`=啊哈==${分路}路已到斩杀线==啊哈=`);
+						斩杀线信号[分路 - 1] = true;
+					}
+
+				}
+
+			}
+			//阶段一所有路已到斩杀线
+			if (斩杀线信号.every(element => element === true)) {
+
+				if (!斩杀线首次触发信号) {
+					if (抽风计数 <= 1) {
+						团本.sendtbCmd("团本普攻");
+						抽风计数 += 1;
+					}
+					斩杀线首次触发信号 = true;
+
+				}
+				else if (this.isAtSelf && !本路击败 && !本路首次击败) {
+					await sleep(4e3);
+					if (抽风计数 <= 1) {
+						团本.sendtbCmd("团本普攻");
+						抽风计数 += 1;
+					}
+
+				}
+				else if (本路击败) {
+					本路首次击败 = true;
+				}
+			}
+
+
+			//阶段2
+			if (阶段一被打死信号.every(element => element === true) && !打死阶段1首次触发信号 && (分路 == 2 || 分路 == 1))  //准备进入阶段2
+			{
+				打死阶段1首次触发信号 = true;
+				if (抽风计数 <= 1) {
+					团本.sendtbCmd("团本普攻");
+					抽风计数 += 1;
+				}
+			}
+
+			else if (进入二阶段标志)  //刚刚进入阶段2
+			{
+				await sleep(4e3);
+				if (抽风计数 <= 1) {
+					团本.sendtbCmd("团本普攻");
+					抽风计数 += 1;
+				}
+			}
+
+			if (禁锢秒 && this.isAtSelf && !禁锢锁 && 阶段2标志) {
+				禁锢锁 = true;
+				await sleep(禁锢秒 * 1e3);
+				if (抽风计数 <= 1) {
+					团本.sendtbCmd("团本普攻");
+					抽风计数 += 1;
+				}
+				禁锢锁 = false;
+			}
+			else if (阶段2标志 && this.isAtSelf && !禁锢秒) {
+				if (技能点 && 技能点 >= 8) {
+					await sleep(4e3);
+					团本.sendtbCmd("团本技能6");
+				}
+				else if (不足)//出现技能点不足的提示
+				{
+					await sleep(4e3);
+					if (抽风计数 <= 1) {
+						团本.sendtbCmd("团本普攻");
+						抽风计数 += 1;
+					}
+				}
+				else//技能点不足 or 正常普攻情况
+				{
+					await sleep(4e3);
+					if (抽风计数 <= 1) {
+						团本.sendtbCmd("团本普攻");
+						抽风计数 += 1;
+					}
+				}
+			}
+			//打败了阶段二，结算
+
+			if (完整体击败) {
+				团本开始了 = false;
+				团本打完了 = true;
+				斩杀线首次触发信号 = false;
+				打死阶段1首次触发信号 = false;
+				本路首次击败 = false;
+				斩杀线信号 = [false, false, false];
+				阶段一被打死信号 = [false, false, false];
+				不小心打死了 = [false, false, false];
+				禁锢锁 = false;
+				修正计数 = 0;
+				团上人数 = 0;
+				await sleep(4e3);
+				//this.send信号("打完了");
+				if (发团人flag) {
+					团本.klsendCmd(团本指令);
+				}
+
+			}
+
+			//禁锢
+
+
+			//获取调试信息
+			if (取文本) {
+				团本.send信号(this.markdownElementContent);
+
+			}
+
+			//发团人冷却
+			if (发团人flag && 发车的冷却 && 团本打完了 && !团本开始了) {
+				await sleep(发车的冷却 * 1e3 + 1e3);
+				团本.klsendCmd(团本指令);
+			}
+
+		}
+
+	}
+
 }
 
 export default Yunguo;

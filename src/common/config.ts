@@ -114,11 +114,13 @@ export interface ConfigType {
 	/** 傀儡开关 */
 	kuilieFlag: any;
 	/** 傀儡QQ */
-	klQQ: any;
+	// klQQ: any;
 	/** 傀儡权限人QQ */
 	klqxqq: any;
 	/** 傀儡信息敏感词 */
 	klmgc: any;
+	全局监控指令: any;
+	智障回复: any;
 	自动出售_Flag: boolean;
 	自动出售_群: any;
 	自动出售_物品名称: any;
@@ -152,6 +154,19 @@ export interface ConfigType {
 	回复信息内容三: any;
 	循环Flag三: boolean;
 	执行回复Flag三: boolean;
+	灵宠羁绊Flag: boolean;
+	灵宠羁绊群: any;
+	灵宠羁绊Id: number;
+	/**自动团 */
+	tbFlag: boolean;
+	取文本内容: boolean;
+	发团人flag: boolean;
+	蹭团: boolean;
+	tbfl: number;
+	总次序: number;
+	团本指令: string;
+	tbzsx: number;
+	tbGroupId: any;
 
 	// 房东人生配置
 	房东Uid: string;

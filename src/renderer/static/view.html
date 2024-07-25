@@ -116,7 +116,7 @@
 							<div style="margin-top: 4px" class="row">
 								<setting-text>发车时间</setting-text>
 								<input key="发车时间" placeholder="请输入发车时间" />
-								<setting-text data-type="secondary">单位:毫秒</setting-text>
+								<setting-text data-type="secondary">单位:人</setting-text>
 							</div>
 						</div>
 
@@ -336,11 +336,30 @@
 
 				<setting-item>
 					<div class="line-item">
+						<div class="row">
+							<setting-text>灵宠羁绊</setting-text>
+							<setting-switch key="灵宠羁绊Flag"></setting-switch>
+						</div>
+						<div style="margin-top: 14px" class="row">
+							<setting-text>羁绊群</setting-text>
+							<input key="灵宠羁绊群" placeholder="请输入用来羁绊的群号" />
+							<input key="灵宠羁绊Id" placeholder="灵宠ID,如:1" />
+						</div>
+						
+					</div>
+				</setting-item>
+
+				<setting-item>
+					<div class="line-item">
 						<div style="margin-top: 14px" class="row">
 							<setting-text>傀儡开关</setting-text>
 							<setting-switch key="kuilieFlag"></setting-switch>
-							<setting-text style="margin-left: 10px">傀儡QQ</setting-text>
-							<input key="klQQ" placeholder="请输入傀儡QQ" />
+							<setting-text>全局监控指令</setting-text>
+							<setting-switch key="全局监控指令"></setting-switch>
+							<setting-text>自动智障回复</setting-text>
+							<setting-switch key="智障回复"></setting-switch>
+							<!-- <setting-text style="margin-left: 10px">傀儡QQ</setting-text>
+							<input key="klQQ" placeholder="请输入傀儡QQ" /> -->
 						</div>
 						<div style="margin-top: 14px" class="row">
 							<setting-text>傀儡权限人QQ("英文逗号分割"=>",")</setting-text>
@@ -349,6 +368,43 @@
 						<div style="margin-top: 14px" class="row">
 							<setting-text>傀儡信息敏感词("英文逗号分割"=>",")</setting-text>
 							<input key="klmgc" placeholder="请输入傀儡信息敏感词" />
+						</div>
+					</div>
+				</setting-item>
+
+				<setting-item>
+					<div class="line-item">
+						<div style="margin-top: 14px" class="row">
+							<setting-text>自动团本</setting-text>
+							<setting-switch key="tbFlag"></setting-switch>
+							<setting-text>(调试)获取文本内容</setting-text>
+							<setting-switch key="取文本内容"></setting-switch>
+						</div>
+						<div style="margin-top: 14px" class="row">
+							<setting-text>我来发起团本</setting-text>
+							<setting-switch key="发团人flag"></setting-switch>
+						</div>
+						<div style="margin-top: 14px" class="row">
+							<setting-text>我蹭蹭我不打</setting-text>
+							<setting-switch key="蹭团"></setting-switch>
+						</div>
+						<div style="margin-top: 14px" class="row">
+							<setting-text>分路</setting-text>
+							<input key="tbfl" placeholder="上路1，中2，下3" />
+							<setting-text>总上车次序</setting-text>
+							<input key="总次序" placeholder="1,2,3,4……" />
+						</div>
+						<div style="margin-top: 14px" class="row">
+							<setting-text>团本指令</setting-text>
+							<input key="团本指令" placeholder="确定发起团本组队2 1" />
+						</div>
+						<div style="margin-top: 14px" class="row">
+							<setting-text>阶段一斩杀线</setting-text>
+							<input key="tbzsx" placeholder="防止其他路来不及打死导致复活" />
+						</div>
+						<div style="margin-top: 4px" class="row">
+							<setting-text>团本群: </setting-text>
+							<input key="tbGroupId" placeholder="常用来打团的群号" />
 						</div>
 					</div>
 				</setting-item>

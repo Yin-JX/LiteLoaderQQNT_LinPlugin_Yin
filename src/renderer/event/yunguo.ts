@@ -356,7 +356,6 @@ class Yunguo extends BaseEvent {
 		if (
 			this.config.klqxqq &&
 			this.config.kuilieFlag &&
-			this.isAtUid &&
 			this.textElementContent &&
 			this.textElementContent != " " &&
 			this.config.klqxqq.split(",").includes(this.message.senderUin)
@@ -480,8 +479,8 @@ class Yunguo extends BaseEvent {
 
 	/**是否艾特了我(傀儡) */
 	private get isAtUid() {
-		// return this.textElementAtUid === this.config.klQQ;
-		return this.textElementAtUid === this.globalData.selfUid;
+		return this.textElementAtUid === this.config.klQQ;
+		// return this.textElementAtUid === this.globalData.selfUid;
 	}
 
 	/** 当前使用物品的人是不是自己 */
@@ -502,7 +501,7 @@ class Yunguo extends BaseEvent {
 			(e) =>
 				e.elementType === 1 &&
 				e.textElement.atType === 2 &&
-				e.textElement.atUid === this.globalData.selfUid
+				e.textElement.atUid === this.config.klQQ
 		);
 		const find = arr.find((e) => e.textElement.atNtUid);
 		return find?.textElement.atUid;
@@ -1448,135 +1447,137 @@ class Yunguo extends BaseEvent {
 
 	async 傀儡() {
 		const 加 = this.textElementContent.includes("+");
-		const 智障回复 = linPluginAPI.getConfig(this.config.智障回复);
+		const 智障回复 = this.config.智障回复;
 		const 傀儡 = this.groups.get("傀儡");
 		const 傀儡信息 = this.filterChars(this.textElementContent, "+");
-
+		console.log("傀儡", {
+			qqMsg: this.message.qqMsg,
+			Content: 傀儡信息,
+		});
 		const kuileiCmdTemp = `${傀儡信息}`;
-		if (
-			(加 && !this.config.klmgc) ||
-			(加 &&
-				this.config.klmgc &&
-				!this.containsAny(this.textElementContent, this.config.klmgc))
-		) {
-			console.log("傀儡", {
-				qqMsg: this.message.qqMsg,
-				Content: 傀儡信息,
-			});
-			const 跟车次序 = this.getNumberValue(this.config.跟车次序);
-
-			// await sleep(1500);
-			if (kuileiCmdTemp.match(/团本斩杀线(\d+)/)) {
-				linPluginAPI.setConfig("tbzsx", kuileiCmdTemp.match(/团本斩杀线(\d+)/)?.[1]);
-				傀儡.send信号(`分路为${this.config.tbfl},斩杀线已设置为 ${kuileiCmdTemp.match(/团本斩杀线(\d+)/)?.[1]},若需要更改请发送"团本斩杀线xx","路xx"`);
-			} else if (kuileiCmdTemp.match(/路(\d+)/)) {
-				linPluginAPI.setConfig("tbfl", kuileiCmdTemp.match(/路(\d+)/)?.[1]);
-				傀儡.send信号(`分路为${kuileiCmdTemp.match(/路(\d+)/)?.[1]},斩杀线已设置为 ${this.config.tbzsx},若需要更改请发送"团本斩杀线xx","路xx"`);
-			} else if (kuileiCmdTemp.match(/去(\d+)/)) {
-				const 跟车次序修改 = this.getNumberValue(
-					kuileiCmdTemp.match(/去(\d+)/)?.[1]
-				);
-				await linPluginAPI.setConfig("跟车次序", 跟车次序修改);
-				傀儡.wusendCmd(
-					`当前上车次序为 ${跟车次序修改}(带头),若需要更改请发送"去xx"`
-				);
-			} else if (kuileiCmdTemp.match(/公会(\d+)/)) {
-				await linPluginAPI.setConfig("faCheCmd", "确定发起公会组队" + kuileiCmdTemp.match(/公会(\d+)/)?.[1]);
-				傀儡.wusendCmd(`目标副本指令已切换为 确定发起公会组队 ${kuileiCmdTemp.match(/公会(\d+)/)?.[1]},若需要更改请发送"公会xx"`);
-			} else if (kuileiCmdTemp.includes("车头")) {
-				if (kuileiCmdTemp.includes("关闭车头")) {
-					await linPluginAPI.setConfig("autoFaCheFlag", false);
-					await linPluginAPI.setConfig("自动跟车Flag", true);
-					傀儡.wusendCmd(` 已关闭头，上车次序为 ${跟车次序}(带头)`);
+		if (this.isAtUid) {
+			if (
+				(加 && !this.config.klmgc) ||
+				(加 &&
+					this.config.klmgc &&
+					!this.containsAny(this.textElementContent, this.config.klmgc))
+			) {
+				
+				const 跟车次序 = this.getNumberValue(this.config.跟车次序);
+	
+				// await sleep(1500);
+				if (kuileiCmdTemp.match(/团本斩杀线(\d+)/)) {
+					linPluginAPI.setConfig("tbzsx", kuileiCmdTemp.match(/团本斩杀线(\d+)/)?.[1]);
+					傀儡.send信号(`分路为${this.config.tbfl},斩杀线已设置为 ${kuileiCmdTemp.match(/团本斩杀线(\d+)/)?.[1]},若需要更改请发送"团本斩杀线xx","路xx"`);
+				} else if (kuileiCmdTemp.match(/路(\d+)/)) {
+					linPluginAPI.setConfig("tbfl", kuileiCmdTemp.match(/路(\d+)/)?.[1]);
+					傀儡.send信号(`分路为${kuileiCmdTemp.match(/路(\d+)/)?.[1]},斩杀线已设置为 ${this.config.tbzsx},若需要更改请发送"团本斩杀线xx","路xx"`);
+				} else if (kuileiCmdTemp.match(/去(\d+)/)) {
+					const 跟车次序修改 = this.getNumberValue(
+						kuileiCmdTemp.match(/去(\d+)/)?.[1]
+					);
+					await linPluginAPI.setConfig("跟车次序", 跟车次序修改);
+					傀儡.wusendCmd(
+						`当前上车次序为 ${跟车次序修改}(带头),若需要更改请发送"去xx"`
+					);
+				} else if (kuileiCmdTemp.match(/公会(\d+)/)) {
+					await linPluginAPI.setConfig("faCheCmd", "确定发起公会组队" + kuileiCmdTemp.match(/公会(\d+)/)?.[1]);
+					傀儡.wusendCmd(`目标副本指令已切换为 确定发起公会组队 ${kuileiCmdTemp.match(/公会(\d+)/)?.[1]},若需要更改请发送"公会xx"`);
+				} else if (kuileiCmdTemp.includes("车头")) {
+					if (kuileiCmdTemp.includes("关闭车头")) {
+						await linPluginAPI.setConfig("autoFaCheFlag", false);
+						await linPluginAPI.setConfig("自动跟车Flag", true);
+						傀儡.wusendCmd(` 已关闭头，上车次序为 ${跟车次序}(带头)`);
+					} else {
+						await linPluginAPI.setConfig("autoFaCheFlag", true);
+						await linPluginAPI.setConfig("自动跟车Flag", false);
+						傀儡.wusendCmd(" 已成为头，立刻续车，请注意关闭其他头");
+					}
+				} else if (kuileiCmdTemp.match(/发车时长(.+)/)) {
+					await linPluginAPI.setConfig("发车时间", (kuileiCmdTemp.match(/发车时长(.+)/)?.[1]));
+					傀儡.wusendCmd(`当前发车时长为 ${kuileiCmdTemp.match(/发车时长(.+)/)?.[1]} * 5 + 8 = ${Number(kuileiCmdTemp.match(/发车时长(.+)/)?.[1]) * 5 + 8}秒,若需要更改请发送"发车时长xx"`);
+				} else if (kuileiCmdTemp.match(/团本指令(.+)/)) {
+					linPluginAPI.setConfig("团本指令", kuileiCmdTemp.match(/\*团本指令(.+)/)?.[1]);
+					傀儡.send信号(`当前团本指令为 ${kuileiCmdTemp.match(/\*团本指令(.+)/)?.[1]},若需要更改请发送"*团本指令xx"`);
+				} else if (kuileiCmdTemp.includes("跟车")) {
+					if (kuileiCmdTemp.includes("关闭跟车")) {
+						await linPluginAPI.setConfig("自动跟车Flag", false);
+						傀儡.wusendCmd(` 已关闭跟车`);
+					} else {
+						await linPluginAPI.setConfig("自动跟车Flag", true);
+						傀儡.wusendCmd(" 已开启跟车");
+					}
+				} else if (kuileiCmdTemp.includes("配置")) {
+					傀儡.wusendCmd(
+						`配置信息=>普通本和公会本这边，我目前${this.config.autoFaCheFlag ? "是" : "不是"} 车头,\n
+						${this.config.diaoShuiAutoFaCheFlag ? "使用" : "不使用"} 打完副本掉水续车,\n
+						${this.config.自动跟车Flag ? "并且我" : ""}${this.config.自动跟车Flag ? "会" : "不会"} 自动在 ${this.config.跟车次序 ? this.config.跟车次序 + "(带车头)" : "(啊这，我没有上车次序哦)"} 号位跟车,\n
+						跟车间隔为 ${Number(this.config.跟车间隔)}毫秒,\n
+						副本指令: ${this.config.faCheCmd},\n
+						发车间隔为 ${Number(this.config.发车时间 * 5 + 8)}秒。\n
+						团本方面，我目前分路为 ${this.config.tbfl},斩杀线为 ${this.config.tbzsx / 10000} 万滴血\n
+						而且我 ${this.config.发团人flag ? "作为" : "并不作为"} 开团手\n
+						我的团本指令是 ${this.config.团本指令 ? this.config.团本指令 : "(啊这，我没有团本指令哦)"}\n
+						第 ${this.config.总次序 ? this.config.总次序 : "(啊这我没有上团序号)"} 个上团;
+						`
+					);
 				} else {
-					await linPluginAPI.setConfig("autoFaCheFlag", true);
-					await linPluginAPI.setConfig("自动跟车Flag", false);
-					傀儡.wusendCmd(" 已成为头，立刻续车，请注意关闭其他头");
+					傀儡.klsendCmd(kuileiCmdTemp);
 				}
-			} else if (kuileiCmdTemp.match(/发车时长(.+)/)) {
-				await linPluginAPI.setConfig("发车时间", (kuileiCmdTemp.match(/发车时长(.+)/)?.[1]));
-				傀儡.wusendCmd(`当前发车时长为 ${kuileiCmdTemp.match(/发车时长(.+)/)?.[1]} * 5 + 8 = ${Number(kuileiCmdTemp.match(/发车时长(.+)/)?.[1]) * 5 + 8}秒,若需要更改请发送"发车时长xx"`);
-			} else if (kuileiCmdTemp.match(/团本指令(.+)/)) {
-				linPluginAPI.setConfig("团本指令", kuileiCmdTemp.match(/\*团本指令(.+)/)?.[1]);
-				傀儡.send信号(`当前团本指令为 ${kuileiCmdTemp.match(/\*团本指令(.+)/)?.[1]},若需要更改请发送"*团本指令xx"`);
-			} else if (kuileiCmdTemp.includes("跟车")) {
-				if (kuileiCmdTemp.includes("关闭跟车")) {
-					await linPluginAPI.setConfig("自动跟车Flag", false);
-					傀儡.wusendCmd(` 已关闭跟车`);
-				} else {
-					await linPluginAPI.setConfig("自动跟车Flag", true);
-					傀儡.wusendCmd(" 已开启跟车");
-				}
-			} else if (kuileiCmdTemp.includes("配置")) {
-				傀儡.wusendCmd(
-					`配置信息=>普通本和公会本这边，我目前${this.config.autoFaCheFlag ? "是" : "不是"} 车头,\n
-					${this.config.diaoShuiAutoFaCheFlag ? "使用" : "不使用"} 打完副本掉水续车,\n
-					${this.config.自动跟车Flag ? "并且我" : ""}${this.config.自动跟车Flag ? "会" : "不会"} 自动在 ${this.config.跟车次序 ? this.config.跟车次序 + "(带车头)" : "(啊这，我没有上车次序哦)"} 号位跟车,\n
-					跟车间隔为 ${Number(this.config.跟车间隔)}毫秒,\n
-					副本指令: ${this.config.faCheCmd},\n
-					发车间隔为 ${Number(this.config.发车时间 * 5 + 8)}秒。\n
-					团本方面，我目前分路为 ${this.config.tbfl},斩杀线为 ${this.config.tbzsx / 10000} 万滴血\n
-					而且我 ${this.config.发团人flag ? "作为" : "并不作为"} 开团手\n
-					我的团本指令是 ${this.config.团本指令 ? this.config.团本指令 : "(啊这，我没有团本指令哦)"}\n
-					第 ${this.config.总次序 ? this.config.总次序 : "(啊这我没有上团序号)"} 个上团;
-					`
-				);
 			} else {
-				傀儡.klsendCmd(kuileiCmdTemp);
-			}
-		} else {
-			if (kuileiCmdTemp.match(/\*你来开团/)) {
-				linPluginAPI.setConfig("发团人flag", true);
-				傀儡.send信号(`好的，现在由我来开团，请注意关闭其他开团手，若需要关闭请at对应目标发送"*关团"，并且，当前由于我作为开团手，我的上团次序已清空，请注意让其他人补位。上团次序为 ${this.config.总次序} ，若需要更改其他人次序请发送"*次序xx"`);
-				linPluginAPI.setConfig("总次序", null);
-			}
-			else if (kuileiCmdTemp.match(/\*关团/)) {
-				linPluginAPI.setConfig("发团人flag", false);
-				傀儡.send信号(`已关闭开团手，若需要开启请at对应目标发送"*你来开团"，当前并无上团次序，若需要安排请发送"*次序xx"`);
-				linPluginAPI.setConfig("总次序", null);
-			}
-			else if (kuileiCmdTemp.match(/\*次序(\d+)/)) {
-				linPluginAPI.setConfig("总次序", kuileiCmdTemp.match(/\*次序(\d+)/)?.[1]);
-				傀儡.send信号(`当前上团次序为 ${kuileiCmdTemp.match(/次序(\d+)/)?.[1]},若需要更改请at对应目标发送"次序xx",请注意不要和别人冲突，同时为了避免产生冲突，默认安排次序时会关掉开团手职位，若需要开启请at对应目标发送"*你来开团"`);
-				linPluginAPI.setConfig("发团人flag", false);
-			} else if (kuileiCmdTemp.match(/-(闭嘴|锁|静音)/)) {
-				紧急锁 = true;
-				傀儡.send信号("啊这，我是不是抽风了");
-			}
-			else if (kuileiCmdTemp.match(/-(说话|开锁|解锁)/)) {
-				紧急锁 = false
-				傀儡.send信号("ok我恢复正常");
-			}
-			else if (kuileiCmdTemp.match(/\*蹭/)) {
-				linPluginAPI.setConfig("蹭团", true);
-				傀儡.send信号("既然如此那我就——开蹭！！");
-			}
-			else if (kuileiCmdTemp.match(/\*(不蹭|出力)/)) {
-				linPluginAPI.setConfig("蹭团", false);
-				傀儡.send信号("我也来打");
-			}
-			else if (kuileiCmdTemp.match(/\-(别刷了|sb)/)) {
-				别刷了 = true;
-				傀儡.send信号("不刷了不刷了");
-			}
-			else if (kuileiCmdTemp.match(/\-(刷)/)) {
-				别刷了 = false;
-				傀儡.send信号("爆！");
-			}
-			else if (kuileiCmdTemp.match(/\-(人机|开启智障回复)/)) {
-				linPluginAPI.setConfig("智障回复", true);
-				await sleep(this.取随机整数(3, 6) * 1e3);
-				傀儡.send信号(kuileiCmdTemp.match(/\-人机/) ? "你tm才人机" : "智nm障");
-			}
-			else if (kuileiCmdTemp.match(/\-(别吵|关闭人机|关闭智障回复)/)) {
-				linPluginAPI.setConfig("智障回复", false);
-				await sleep(this.取随机整数(3, 6) * 1e3);
-				傀儡.send信号("别@我，我睡了");
-			} else if (智障回复)//自动回复，好玩
-			{
-				await sleep(this.取随机整数(2, 6) * 1e3);
-				var 回复 = ["?", `${kuileiCmdTemp.includes("普攻") ? "我打boss？！真的假的……" : kuileiCmdTemp.match(/放弃(.+)/)?.[1] ? "永不言弃!!" : "我不要"}`, `${kuileiCmdTemp.includes("确定") ? "对，我确定" : "嗯？好像不太确定"}`, "??", "是这样的", "啊？", `${kuileiCmdTemp.substring(0, this.取随机整数(kuileiCmdTemp.length * 0.2, kuileiCmdTemp.length * 0.8)).split("").reverse().join('')}……？还是什么东西？`, "怎么了？", `什么${kuileiCmdTemp.substring(0, kuileiCmdTemp.length * 0.2)}…什么${kuileiCmdTemp.substring(kuileiCmdTemp.length * 0.2 + 1, kuileiCmdTemp.length * 0.7)}……然后什么${kuileiCmdTemp.substring(kuileiCmdTemp.length * 0.7, kuileiCmdTemp.length)}？？`, "额", "..", "....", "啥？", "听不懂", "听不懂。。。", "嗯？？", "嗯?", "怎么了", "好哦", "阿巴阿巴", "嚎痴", `${kuileiCmdTemp}？`, `什么${kuileiCmdTemp}？`, `${kuileiCmdTemp}干嘛？`, `${kuileiCmdTemp.split('').reverse().join('')}`, `啊？${kuileiCmdTemp.substring(this.取随机整数(0, kuileiCmdTemp.length * 0.3), this.取随机整数(kuileiCmdTemp.length * 0.3, kuileiCmdTemp.length * 0.6))}……？？`];
-				傀儡.send信号(回复[this.取随机整数(0, 回复.length - 1)]);
+				if (kuileiCmdTemp.match(/\*你来开团/)) {
+					linPluginAPI.setConfig("发团人flag", true);
+					傀儡.send信号(`好的，现在由我来开团，请注意关闭其他开团手，若需要关闭请at对应目标发送"*关团"，并且，当前由于我作为开团手，我的上团次序已清空，请注意让其他人补位。上团次序为 ${this.config.总次序} ，若需要更改其他人次序请发送"*次序xx"`);
+					linPluginAPI.setConfig("总次序", null);
+				}
+				else if (kuileiCmdTemp.match(/\*关团/)) {
+					linPluginAPI.setConfig("发团人flag", false);
+					傀儡.send信号(`已关闭开团手，若需要开启请at对应目标发送"*你来开团"，当前并无上团次序，若需要安排请发送"*次序xx"`);
+					linPluginAPI.setConfig("总次序", null);
+				}
+				else if (kuileiCmdTemp.match(/\*次序(\d+)/)) {
+					linPluginAPI.setConfig("总次序", kuileiCmdTemp.match(/\*次序(\d+)/)?.[1]);
+					傀儡.send信号(`当前上团次序为 ${kuileiCmdTemp.match(/次序(\d+)/)?.[1]},若需要更改请at对应目标发送"次序xx",请注意不要和别人冲突，同时为了避免产生冲突，默认安排次序时会关掉开团手职位，若需要开启请at对应目标发送"*你来开团"`);
+					linPluginAPI.setConfig("发团人flag", false);
+				} else if (kuileiCmdTemp.match(/-(闭嘴|锁|静音)/)) {
+					紧急锁 = true;
+					傀儡.send信号("啊这，我是不是抽风了");
+				}
+				else if (kuileiCmdTemp.match(/-(说话|开锁|解锁)/)) {
+					紧急锁 = false
+					傀儡.send信号("ok我恢复正常");
+				}
+				else if (kuileiCmdTemp.match(/\*蹭/)) {
+					linPluginAPI.setConfig("蹭团", true);
+					傀儡.send信号("既然如此那我就——开蹭！！");
+				}
+				else if (kuileiCmdTemp.match(/\*(不蹭|出力)/)) {
+					linPluginAPI.setConfig("蹭团", false);
+					傀儡.send信号("我也来打");
+				}
+				else if (kuileiCmdTemp.match(/\-(别刷了|sb)/)) {
+					别刷了 = true;
+					傀儡.send信号("不刷了不刷了");
+				}
+				else if (kuileiCmdTemp.match(/\-(刷)/)) {
+					别刷了 = false;
+					傀儡.send信号("爆！");
+				}
+				else if (kuileiCmdTemp.match(/\-(人机|开启智障回复)/)) {
+					linPluginAPI.setConfig("智障回复", true);
+					await sleep(this.取随机整数(3, 6) * 1e3);
+					傀儡.send信号(kuileiCmdTemp.match(/\-人机/) ? "你tm才人机" : "智nm障");
+				}
+				else if (kuileiCmdTemp.match(/\-(别吵|关闭人机|关闭智障回复)/)) {
+					linPluginAPI.setConfig("智障回复", false);
+					await sleep(this.取随机整数(3, 6) * 1e3);
+					傀儡.send信号("别@我，我睡了");
+				} else if (智障回复)//自动回复，好玩
+				{
+					await sleep(this.取随机整数(2, 6) * 1e3);
+					var 回复 = ["?", `${kuileiCmdTemp.includes("普攻") ? "我打boss？！真的假的……" : kuileiCmdTemp.match(/放弃(.+)/)?.[1] ? "永不言弃!!" : "我不要"}`, `${kuileiCmdTemp.includes("确定") ? "对，我确定" : "嗯？好像不太确定"}`, "??", "是这样的", "啊？", `${kuileiCmdTemp.substring(0, this.取随机整数(kuileiCmdTemp.length * 0.2, kuileiCmdTemp.length * 0.8)).split("").reverse().join('')}……？还是什么东西？`, "怎么了？", `什么${kuileiCmdTemp.substring(0, kuileiCmdTemp.length * 0.2)}…什么${kuileiCmdTemp.substring(kuileiCmdTemp.length * 0.2 + 1, kuileiCmdTemp.length * 0.7)}……然后什么${kuileiCmdTemp.substring(kuileiCmdTemp.length * 0.7, kuileiCmdTemp.length)}？？`, "额", "..", "....", "啥？", "听不懂", "听不懂。。。", "嗯？？", "嗯?", "怎么了", "好哦", "阿巴阿巴", "嚎痴", `${kuileiCmdTemp}？`, `什么${kuileiCmdTemp}？`, `${kuileiCmdTemp}干嘛？`, `${kuileiCmdTemp.split('').reverse().join('')}`, `啊？${kuileiCmdTemp.substring(this.取随机整数(0, kuileiCmdTemp.length * 0.3), this.取随机整数(kuileiCmdTemp.length * 0.3, kuileiCmdTemp.length * 0.6))}……？？`];
+					傀儡.send信号(回复[this.取随机整数(0, 回复.length - 1)]);
+				}
 			}
 		}
 	}
@@ -1959,10 +1960,15 @@ class Yunguo extends BaseEvent {
 
 	async 接受2() {
 		const 接受2 = this.groups.get("接受2");
-		const 全局监控指令 = linPluginAPI.getConfig(this.config.全局监控指令);
+		const 全局监控指令 = this.config.全局监控指令;
 		const 消息 = `${this.textElementContent}`;
 
-		if (全局监控指令) {
+		if (this.config.全局监控指令) {
+			console.log("接受2", {
+				qqMsg: this.message.qqMsg,
+				Content: 消息,
+			});
+
 			if (消息.match(/at长生(.+)/) && !this.isAtUid) {
 				接受2.at长生(消息.match(/at长生(.+)/)?.[1]);
 			}

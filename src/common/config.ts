@@ -114,7 +114,7 @@ export interface ConfigType {
 	/** 傀儡开关 */
 	kuilieFlag: any;
 	/** 傀儡QQ */
-	// klQQ: any;
+	klQQ: any;
 	/** 傀儡权限人QQ */
 	klqxqq: any;
 	/** 傀儡信息敏感词 */

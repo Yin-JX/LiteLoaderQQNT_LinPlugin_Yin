@@ -59,7 +59,14 @@ var 状态记录组 = {
 	禁锢锁: false,
 	修正计数: 0,
 	抽风计数: 0,
-}
+};
+
+var 消息组 = {
+	ele: [],
+	group: [],
+	atc: [],
+	text: [],
+};
 
 class Group extends EuphonyGroup {
 	private at: At;
@@ -182,7 +189,24 @@ class Group extends EuphonyGroup {
 		messageChain.append(this.at);
 		messageChain.append(new PlainText(msg));
 		this.sendMessage(messageChain);
-	  }
+	}
+
+	发射标记(groups, msgs, txt) {
+		const at = new At("2854200865", "u_FY-uEFafkeFr4we_Y7mdEA");
+
+		groups.forEach((e) => {
+			msgs.forEach((t) => {
+				let message = MessageChain.fromNative(t);
+				sleep(300);
+				this.sendMessage(
+					message
+						.remove(1)
+						.append(at)
+						.append(new PlainText(" " + txt))
+				);
+			});
+		});
+	}
 
 	xiuxsendCmd(msg: string) {
 		const messageChain = new MessageChain();
@@ -350,7 +374,7 @@ class Yunguo extends BaseEvent {
 			}
 			if (this.config.tbFlag) {
 				this.TB2();
-			  }
+			}
 		}
 
 		if (
@@ -441,41 +465,39 @@ class Yunguo extends BaseEvent {
 	/** 自己是否在这个团上 */
 	private get 我在团上吗() {
 		const 分路 = Number(this.config.tbfl);
-		
+
 		const 加入团 = this.markdownElementContent.match(/加入团本(\d+)/g);
-	
+
 		if (this.上团按钮 || 加入团) {
-		  const str = this.markdownElementContent.split(">#")[分路]; //对应自己分路
-		  if (str) {
-			const userGroups = str.match(/用户(:|：)(\d+)/g);
-	
-			if(userGroups && userGroups.length > 0)
-			{
-			  if (userGroups.find((e) => e.includes(this.config.yunGuoUid))) {
-				首次上团 = true;
-				团上人数 = 0;
-				//this.send信号("给我整不会了");
-				return true;
-			  }
-			  else{
-				//this.send信号("你知道个蛋");
-			  }
+			const str = this.markdownElementContent.split(">#")[分路]; //对应自己分路
+			if (str) {
+				const userGroups = str.match(/用户(:|：)(\d+)/g);
+
+				if (userGroups && userGroups.length > 0) {
+					if (userGroups.find((e) => e.includes(this.config.yunGuoUid))) {
+						首次上团 = true;
+						团上人数 = 0;
+						//this.send信号("给我整不会了");
+						return true;
+					}
+					else {
+						//this.send信号("你知道个蛋");
+					}
+				}
+				return false;
+
+
+			}
+			else {
+				//this.send信号("我不到啊");
 			}
 			return false;
-	
-	
-		  }
-		  else
-		  {
-			//this.send信号("我不到啊");
-		  }
-		  return false;
 		}
-		else{
-		  //this.send信号("那我不到啊");
+		else {
+			//this.send信号("那我不到啊");
 		}
 		return false;
-	  }
+	}
 
 	/**是否艾特了我(傀儡) */
 	private get isAtUid() {
@@ -1462,9 +1484,9 @@ class Yunguo extends BaseEvent {
 					this.config.klmgc &&
 					!this.containsAny(this.textElementContent, this.config.klmgc))
 			) {
-				
+
 				const 跟车次序 = this.getNumberValue(this.config.跟车次序);
-	
+
 				// await sleep(1500);
 				if (kuileiCmdTemp.match(/团本斩杀线(\d+)/)) {
 					linPluginAPI.setConfig("tbzsx", kuileiCmdTemp.match(/团本斩杀线(\d+)/)?.[1]);
@@ -2058,6 +2080,28 @@ class Yunguo extends BaseEvent {
 				修正计数 = 状态记录组.修正计数;
 
 				接受2.send信号("状态回溯");
+			} else if (消息.match(/-标记/) && !this.isAtUid) {
+				消息组.group.push(this.message.qqMsg.peerUin);
+				消息组.text.push(this.message.qqMsg.elements);
+			} else if (消息.match(/-(输出)(.+)/)) {
+				接受2.发射标记(
+					消息组.group,
+					消息组.text,
+					消息.match(/-(输出)(.+)/)?.[2]
+				);
+			} else if (消息.match(/-(斩|杀)/)) {
+				接受2.klsendCmd("团本普攻");
+				接受2.发射标记(消息组.group, 消息组.text, "团本普攻");
+			} else if (消息.match(/-(回血|补血)/)) {
+				接受2.klsendCmd(
+					this.config.yaoshuiCmd
+						? this.config.yaoshuiCmd
+						: "升级"
+				);
+			} else if (消息.match(/-(清理标记|清)/)) {
+				消息组.group = [];
+				消息组.text = [];
+				接受2.send信号("标记已清理");
 			}
 
 		}
